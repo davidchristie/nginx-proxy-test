@@ -45,6 +45,7 @@ jobs:
       - name: Print nginx-proxy container logs
         run: docker logs nginx-proxy
       - name: Print whoami container logs
+        run: docker logs whoami
 
   docker-compose:
     name: Docker Compose
