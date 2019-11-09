@@ -14,4 +14,4 @@ jobs:
       - name: Start the services
         run: docker-compose up -d
       - name: Test http://whoami.local can be resolved
-        run: docker run --network container:nginx-proxy golang curl http://whoami.local
+        run: docker run --network container:nginx-proxy curlimages/curl http://whoami.local
