@@ -68,3 +68,17 @@ jobs:
         run: docker run --network container:nginx-proxy curlimages/curl http://whoami.local
       - name: Print docker service logs
         run: docker-compose logs
+
+  docker-compose-simple:
+    name: Docker Compose Simple
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-16.04, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Start the services
+        run: docker-compose -f simple.docker-compose.yml up -d
+      - name: Test nginx-proxy fowards requests to whoami service
+        run: curl -H "Host: whoami.local" localhost
