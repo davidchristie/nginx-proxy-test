@@ -36,8 +36,8 @@ jobs:
 
       - name: List docker networks
         run: docker network ls
-      - name: Inspect default docker network
-        run: docker network inspect nginx-proxy-test_default
+      - name: Inspect the common docker network
+        run: docker network inspect common
       - name: Print generated nginx-proxy configuration
         run: docker-compose exec -T nginx-proxy cat /etc/nginx/conf.d/default.conf
       - name: Test http://whoami.local can be resolved
