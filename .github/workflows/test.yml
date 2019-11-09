@@ -4,46 +4,46 @@ on: [push]
 
 jobs:
   docker:
-  name: Docker
-  runs-on: ${{ matrix.os }}
-  strategy:
-    fail-fast: false
-    matrix:
-      os: [ubuntu-16.04, ubuntu-latest]
-  steps:
-    - uses: actions/checkout@v1
-    - name: Start the services
-      run: |
-        docker run \
-          --detach \
-          --hostname whoami.local \
-          --name: nginx-proxy \
-          --publish 80:80 \
-          --volume /var/run/docker.sock:/tmp/docker.sock:ro \
-          jwilder/nginx-proxy
+    name: Docker
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-16.04, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Start the services
+        run: |
+          docker run \
+            --detach \
+            --hostname whoami.local \
+            --name: nginx-proxy \
+            --publish 80:80 \
+            --volume /var/run/docker.sock:/tmp/docker.sock:ro \
+            jwilder/nginx-proxy
 
-        docker run \
-          --detach \
-          --env VIRTUAL_HOST=whoami.local \
-          --name whoami
-          jwilder/whoami
+          docker run \
+            --detach \
+            --env VIRTUAL_HOST=whoami.local \
+            --name whoami
+            jwilder/whoami
 
-    - name: Connect containers to a common network
-      run: |
-        docker network create common
-        docker network connect common whoami
-        docker network connect common nginx-proxy
+      - name: Connect containers to a common network
+        run: |
+          docker network create common
+          docker network connect common whoami
+          docker network connect common nginx-proxy
 
-    - name: List docker networks
-      run: docker network ls
-    - name: Inspect default docker network
-      run: docker network inspect nginx-proxy-test_default
-    - name: Print generated nginx-proxy configuration
-      run: docker-compose exec -T nginx-proxy cat /etc/nginx/conf.d/default.conf
-    - name: Test http://whoami.local can be resolved
-      run: docker run --network container:nginx-proxy curlimages/curl http://whoami.local
-    - name: Print docker service logs
-      run: docker-compose logs
+      - name: List docker networks
+        run: docker network ls
+      - name: Inspect default docker network
+        run: docker network inspect nginx-proxy-test_default
+      - name: Print generated nginx-proxy configuration
+        run: docker-compose exec -T nginx-proxy cat /etc/nginx/conf.d/default.conf
+      - name: Test http://whoami.local can be resolved
+        run: docker run --network container:nginx-proxy curlimages/curl http://whoami.local
+      - name: Print docker service logs
+        run: docker-compose logs
 
   docker-compose:
     name: Docker Compose
