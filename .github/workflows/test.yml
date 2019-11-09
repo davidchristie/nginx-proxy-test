@@ -1,0 +1,14 @@
+name: Test
+
+on: [push]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Start the services
+        run: docker-compose up -d
+      - name: Test http://whoami.local can be resolved
+        run: docker run --network container:nginx-proxy golang curl http://whoami.local
