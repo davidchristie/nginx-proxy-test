@@ -42,8 +42,9 @@ jobs:
         run: docker exec nginx-proxy cat /etc/nginx/conf.d/default.conf
       - name: Test http://whoami.local can be resolved
         run: docker run --network container:nginx-proxy curlimages/curl http://whoami.local
-      - name: Print docker service logs
-        run: docker-compose logs
+      - name: Print nginx-proxy container logs
+        run: docker logs nginx-proxy
+      - name: Print whoami container logs
 
   docker-compose:
     name: Docker Compose
