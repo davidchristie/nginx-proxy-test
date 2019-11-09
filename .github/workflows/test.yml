@@ -81,4 +81,4 @@ jobs:
       - name: Start the services
         run: docker-compose -f simple.docker-compose.yml up -d
       - name: Test nginx-proxy fowards requests to whoami service
-        run: curl -H "Host: whoami.local" localhost
+        run: "curl -H 'Host: whoami.local' localhost"
